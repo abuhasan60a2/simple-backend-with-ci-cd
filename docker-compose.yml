@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/test_db?authSource=admin
+    depends_on:
+      - mongo
+    networks:
+      - backend-network
+  
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+
+volumes:
+  mongo-data:
